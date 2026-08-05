@@ -15,13 +15,13 @@ class LoginPage{
         await this.page.goto(this.url);
     }
 
+
+
     async signinToApplication(email,password){
 
         await this.page.fill(this.email, email);
         await this.page.fill(this.password, password);
         await this.page.click(this.signinButton);
-        await this.page.waitForLoadState("networkidle");
-
     }
 }
 
