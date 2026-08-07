@@ -1,4 +1,7 @@
 {
     "username":"admin@email.com",
-    "password":"admin@123"
+    "password":"admin@123",
+    "signupname":"Test123",
+    "fakeusername":"fake@gmail.com",
+    "fakepassword":"123456798"
 }
