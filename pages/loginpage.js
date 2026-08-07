@@ -32,6 +32,11 @@ class LoginPage{
                 return `//h2[text()="${this.errorMsg.messages[msg]}"]`
             } 
         };
+        //Social Media buttons right below Sign in button
+        this.youtubeBtn = page.locator('a[href*="youtube.com"]').first();
+        this.twitterBtn = page.locator('a[href*="twitter.com"]').first();
+        this.linkedinBtn = page.locator('a[href*="linkedin.com"]').first();
+        this.facebookBtn = page.locator('a[href*="facebook.com"]').first();
     }
 
     // Returns a Playwright locator for an error based on a key from the messages map.
@@ -56,6 +61,21 @@ class LoginPage{
     async navigateToSignUp(){
         await this.page.click(this.signupButton);
     }
-}
+
+    //Clicks a social button and returns the newly opened page object
+    async clickSocialButtonAndGetNewTab(socialLocator){
+        // 1. Set up the listener for the new tab event
+        const newTabPromise = this.page.context().waitForEvent('page');
+
+        // 2. Click the button that triggers the new tab
+        await socialLocator.click();
+
+         // 3. Wait for the tab to completely load and return it
+        const newTab = await newTabPromise;
+        await newTab.waitForLoadState();
+        return newTab;
+    }
+
+};
 
 module.exports = LoginPage;

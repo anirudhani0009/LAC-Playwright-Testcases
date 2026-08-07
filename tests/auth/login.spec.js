@@ -4,7 +4,7 @@ const Home = require("../../pages/homepage.js");
 const LoginData = JSON.parse(JSON.stringify(require("../../assets/lac-loginCred.json")));
 
 // Test suite for the login page and its validation behavior.
-test.describe("LAC Login Page", () => {
+test.describe("LAC Login Page for Authentication", () => {
     let login;
     let home;
 
