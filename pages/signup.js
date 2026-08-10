@@ -1,9 +1,9 @@
-const {expect} = require("@playwright/test");
+const { expect } = require("@playwright/test");
 
 // Page object model for the signup page.
 // Contains selectors and form interactions for the signup workflow.
-class SignupPage{
-    constructor(page){
+class SignupPage {
+    constructor(page) {
         // Store the current Playwright page reference.
         this.page = page;
         // Header locator used to confirm the signup page is visible.
@@ -14,11 +14,11 @@ class SignupPage{
         this.password = "#password";
         // Configurable list of interests and a helper to build their locators.
         this.interestsConfig = {
-            values: ["JavaScript", "AI", "test", "Selenium"],
+            values: ["JavaScript", "AI", "JMeter", "Java"],
             getLocator: (text) => `//label[contains(@class, 'interest') and text()='${text}']`
         };
         // Radio button or label selector for selecting gender.
-        this.gender = "//label[@class='gender' and text()='Female']";
+        this.gender = "//input[@name='gender' and @value='Female']";
         // Dropdown selector and the option that should be selected.
         this.state = {
             locator: "#state",
@@ -31,24 +31,53 @@ class SignupPage{
         };
         // Button used to submit the signup form.
         this.signupButton = "//button[text()='Sign up']";
+        //Already a user? Login -  Button
+        this.login = "//a[@href='/login']";
     }
 
-    // Fills the signup form fields, selects interests, gender, state, and hobbies.
-    async signupFill(name, email, password){
+    //Filling Name
+    async signUpFillName(name) {
         await this.page.fill(this.name, name);
+    }
+
+    //Filling email
+    async signUpFillEmail(email) {
         await this.page.fill(this.email, email);
+    }
+    //Filling Password
+    async signUpFillPassword(password) {
         await this.page.fill(this.password, password);
+    }
+
+    //Checking interest checkboxes
+    async signUpFillInterests() {
         // Click each interest checkbox or label on the page.
-        for(const value of this.interestsConfig.values){
+        for (const value of this.interestsConfig.values) {
             const locator = this.interestsConfig.getLocator(value);
             await this.page.click(locator);
         }
-        // Select gender and state values.
-        await this.page.click(this.gender);
-        await this.page.locator(this.state.locator).selectOption(this.state.option);
-        // Select multiple hobbies from the hobbies control.
-        await this.page.locator(this.hobbies.locator).selectOption([this.hobbies.options[0],this.hobbies.options[1]]);
     }
+
+    // Select gender values.
+    async signUpFillGender() {
+        await this.page.click(this.gender);
+    }
+
+    // Select state values.
+    async signUpFillState() {
+        await this.page.locator(this.state.locator).selectOption(this.state.option);
+    }
+
+    // Select hobbies values
+    async signUpFillHobbies() {
+        await this.page.locator(this.hobbies.locator).selectOption([this.hobbies.options[0], this.hobbies.options[1]]);
+    }
+
+    //Clicking on Already a user? Login - Link
+    async loginLink(){
+        await this.page.click(this.login);
+    }
+
 }
 
 module.exports = SignupPage;

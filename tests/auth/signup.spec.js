@@ -24,8 +24,104 @@ test.describe("LAC Signup Page", () => {
 
     test("Filling and checking Sign Up with Valid details", async ({page}) => {
         // Fill the signup form with valid test data.
-        await signup.signupFill(LoginData.signupname, LoginData.fakeusername, LoginData.fakepassword);
+        await signup.signUpFillName(LoginData.signupname);
+        await signup.signUpFillEmail(LoginData.fakeusername);
+        await signup.signUpFillPassword(LoginData.fakepassword);
+        await signup.signUpFillInterests();
+        await signup.signUpFillGender();
+        await signup.signUpFillState();
+        await signup.signUpFillHobbies();
+
         // Verify that the signup button remains enabled after filling the form.
         await expect(page.locator(signup.signupButton)).toBeEnabled();
     });
+
+    test("Filling and checking Sign Up without entering name", async ({page}) => {
+        // Fill the signup form with valid test data.
+        await signup.signUpFillEmail(LoginData.fakeusername);
+        await signup.signUpFillPassword(LoginData.fakepassword);
+        await signup.signUpFillInterests();
+        await signup.signUpFillGender();
+        await signup.signUpFillState();
+        await signup.signUpFillHobbies();
+
+        // Verify that the signup button remains enabled after filling the form.
+        await expect(page.locator(signup.signupButton)).not.toBeEnabled();
+    });
+
+    test("Filling and checking Sign Up without entering email", async ({page}) => {
+        // Fill the signup form with valid test data.
+        await signup.signUpFillName(LoginData.signupname);
+        await signup.signUpFillPassword(LoginData.fakepassword);
+        await signup.signUpFillInterests();
+        await signup.signUpFillGender();
+        await signup.signUpFillState();
+        await signup.signUpFillHobbies();
+
+        // Verify that the signup button remains enabled after filling the form.
+        await expect(page.locator(signup.signupButton)).not.toBeEnabled();
+    });
+
+    test("Filling and checking Sign Up without entering password", async ({page}) => {
+        // Fill the signup form with valid test data.
+        await signup.signUpFillName(LoginData.signupname);
+        await signup.signUpFillEmail(LoginData.fakeusername);
+        await signup.signUpFillInterests();
+        await signup.signUpFillGender();
+        await signup.signUpFillState();
+        await signup.signUpFillHobbies();
+
+        // Verify that the signup button remains enabled after filling the form.
+        await expect(page.locator(signup.signupButton)).not.toBeEnabled();
+    });
+
+
+    test("Filling and checking Sign Up without checking interests box", async ({page}) => {
+        // Fill the signup form with valid test data.
+        await signup.signUpFillName(LoginData.signupname);
+        await signup.signUpFillEmail(LoginData.fakeusername);
+        await signup.signUpFillPassword(LoginData.fakepassword);
+        await signup.signUpFillGender();
+        await signup.signUpFillState();
+        await signup.signUpFillHobbies();
+
+        // Verify that the signup button remains enabled after filling the form.
+        await expect(page.locator(signup.signupButton)).not.toBeEnabled();
+    });
+
+
+    test("Filling and checking Sign Up without slecting states", async ({page}) => {
+        // Fill the signup form with valid test data.
+        await signup.signUpFillName(LoginData.signupname);
+        await signup.signUpFillEmail(LoginData.fakeusername);
+        await signup.signUpFillPassword(LoginData.fakepassword);
+        await signup.signUpFillInterests();
+        await signup.signUpFillGender();
+        await signup.signUpFillHobbies();
+
+        // Verify that the signup button remains enabled after filling the form.
+        await expect(page.locator(signup.signupButton)).not.toBeEnabled();
+    });
+    
+
+    test("Filling and checking Sign Up without slecting hobbies", async ({page}) => {
+        // Fill the signup form with valid test data.
+        await signup.signUpFillName(LoginData.signupname);
+        await signup.signUpFillEmail(LoginData.fakeusername);
+        await signup.signUpFillPassword(LoginData.fakepassword);
+        await signup.signUpFillInterests();
+        await signup.signUpFillGender();
+        await signup.signUpFillState();
+
+        // Verify that the signup button remains enabled after filling the form.
+        await expect(page.locator(signup.signupButton)).not.toBeEnabled();
+    });
+
+    test("Checking the Login link in Signup page", async ({page}) => {
+
+        await signup.loginLink();
+        await expect(page.locator(login.header)).toBeVisible({timeout: 3000});
+
+    });
+
 });
