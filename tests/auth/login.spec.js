@@ -22,7 +22,7 @@ test.describe("LAC Login Page for Authentication", () => {
         // Submit valid credentials and confirm the login succeeds.
         await login.signinToApplication(LoginData.username, LoginData.password);
         await expect(page.locator(login.signinButton)).not.toBeVisible();
-        await expect(page.locator(home.manageButton)).toBeVisible({ timeout: 5000 });
+        await expect(home.manageButton).toBeVisible({ timeout: 5000 });
     });
 
     test("Sign in with Incorrect password", async ({ page }) => {
