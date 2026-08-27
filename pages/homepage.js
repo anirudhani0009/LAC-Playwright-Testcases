@@ -18,12 +18,12 @@ class HomePage {
         this.courses = {
             selenium: "Selenium For Web Automation",
             pwJava: "Playwright with Java",
-            pwJavaPractice: "Playwright with Java practice",
-            pwTS: "PW-TS",
-            pw: "playwright"
+            swTesting: "Software Testing Course",
+            test: "test",
+            //pw: "playwright"
         };
         this.allAddtoCartButtons = page.locator('.course-card').getByRole('button', { name: 'Add to Cart' });
-        this.coursesToBuy = [this.courses.selenium, this.courses.pwTS, this.courses.pw];
+        this.coursesToBuy = [this.courses.selenium, this.courses.pwJava, this.courses.swTesting];
         this.coursesAll = Object.values(this.courses);
         this.cartCountLocator = page.locator('span.count');
     }

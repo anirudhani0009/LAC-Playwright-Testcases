@@ -14,7 +14,7 @@ class SignupPage {
         this.password = "#password";
         // Configurable list of interests and a helper to build their locators.
         this.interestsConfig = {
-            values: ["IND", "Agentic", "MySQL"],
+            values: ["JavaScript", "Playwright", "Selenium"],
             getLocator: (text) => `//label[contains(@class, 'interest') and text()='${text}']`
         };
         // Radio button or label selector for selecting gender.

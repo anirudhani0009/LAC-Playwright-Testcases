@@ -25,7 +25,7 @@ test.describe("LAC Homepage", () => {
     test("Adding and removing all 5 items in and out of the cart", async ({ page }) => {
         // adding all the items to the cart and verifying
         await home.addCourses(home.coursesAll);
-        await expect(home.cartCountLocator).toContainText("5");
+        await expect(home.cartCountLocator).toContainText(Object.keys(home.courses).length.toString());
 
         for (const course of home.coursesAll) {
             const removeButton = home.getRemoveButton(course);
