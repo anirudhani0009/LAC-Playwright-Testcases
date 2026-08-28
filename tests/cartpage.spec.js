@@ -4,27 +4,30 @@ const Home = require("../pages/homepage.js");
 const Cart = require("../pages/cartpage.js");
 const LoginData = JSON.parse(JSON.stringify(require("../assets/lac-loginCred.json")));
 
-// Test suite for the cart page and its validation behavior.
+// These tests verify cart contents, totals, removal behavior, and enrollment flows.
 test.describe("LAC cart Page behaviours", () => {
     let login;
     let home;
     let cart;
 
     test.beforeEach(async ({ page }) => {
-        // Create the page objects before each test.
+        // Create page objects so each test can use the page-specific actions and locators.
         login = new Login(page);
         home = new Home(page);
         cart = new Cart(page);
 
-        // Navigate to the cart page and verify the page is displayed.
+        // Sign in and confirm that the authenticated homepage is available.
         await login.navigateToLogin();
         await expect(page.locator(login.header)).toBeVisible({ timeout: 3000 });
         await login.signinToApplication(LoginData.username, LoginData.password);
         await expect(page.locator(login.signinButton)).not.toBeVisible();
         await expect(home.cart).toBeVisible({timeout: 3000 });
+
+        // Add every course from the test data so each test starts with the same cart contents.
         await home.addCourses(home.coursesAll);
-        //Adding all courses mentioned in lac-courses JSON file
         await expect(home.cartCountLocator).toContainText(Object.keys(home.courses).length.toString());
+
+        // Open the cart and confirm that enrollment is available.
         await home.goTocart();
         await expect(cart.enrollNowBtn).toBeVisible({timeout: 3000});
 
@@ -32,12 +35,12 @@ test.describe("LAC cart Page behaviours", () => {
 
     test("Verify Items and prices in the cart and pressing cancel from the pop-up", async ({ page }) => {
 
-        //Checking if the cart contains all the courses added
+        // Confirm that all expected courses were added and that the displayed total is correct.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
-        //Checking the total price shown in the cart page with the calculated price
         const calculatedPrice = await cart.getCartTotalPrice();
         await expect(cart.priceLocator).toContainText(calculatedPrice.toString());
-        //Clicking the enroll button
+
+        // Open enrollment, verify its total, then cancel without completing the order.
         await cart.enrollNowBtn.click();
         await expect(cart.enrollNowBtnPopUp).toBeVisible({ timeout: 3000 });
         await expect(cart.priceLocatorPopUp).toContainText(calculatedPrice.toString());
@@ -48,17 +51,15 @@ test.describe("LAC cart Page behaviours", () => {
 
     test("Verify Items and prices in the cart and completing order", async ({ page }) => {
 
-        //Checking if the cart contains all the courses added
+        // Confirm the cart contents and total before starting enrollment.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
-        //Checking the total price shown in the cart page with the calculated price
         const calculatedPrice = await cart.getCartTotalPrice();
         await expect(cart.priceLocator).toContainText(calculatedPrice.toString());
-        //Clicking the enroll button
+
+        // Submit the enrollment form and verify that a valid order ID is generated.
         await cart.enrollNowBtn.click();
         await expect(cart.enrollNowBtnPopUp).toBeVisible({ timeout: 3000 });
-        //Check the Final price shown in the Pop-up
         await expect(cart.priceLocatorPopUp).toContainText(calculatedPrice.toString());
-        //Clicking Enroll button in the pop-up
         await cart.fillPopUp();
         await cart.enrollNowBtnPopUp.click();
         await expect(cart.orderIdLocator).toBeVisible({timeout: 3000});
@@ -71,13 +72,12 @@ test.describe("LAC cart Page behaviours", () => {
 
     test("Removing all items one by one from the cart, checking the price and clicking on Shop now button", async ({ page }) => {
 
-        //Checking if the cart contains all the courses added
+        // Confirm the starting cart contents and total.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
-        //Checking the total price shown in the cart page with the calculated price
         const calculatedPrice = await cart.getCartTotalPrice();
         await expect(cart.priceLocator).toContainText(calculatedPrice.toString());
 
-        //Removing items one by one and checking the updated price each time
+        // Remove every course and verify that the total decreases after each removal.
         for(const course of cart.coursesAll){
 
             await cart.removeFromCart(course);
@@ -87,7 +87,7 @@ test.describe("LAC cart Page behaviours", () => {
         }
         await expect(cart.priceLocator).toContainText("0");
         await cart.shopNowBtn.click();
-        //Checking if the page is redirected to home page
+        // Confirm that Shop Now returns the user to the homepage.
         await expect(home.cart).toBeVisible({timeout: 3000 });
         await expect(home.manageButton).toBeVisible({ timeout: 3000 });
         await expect(home.breadCrumbsBtn).toBeVisible({ timeout:3000 });
@@ -96,13 +96,12 @@ test.describe("LAC cart Page behaviours", () => {
 
     test("Removing all but one item from the cart and enrolling", async ({ page }) => {
 
-        //Checking if the cart contains all the courses added
+        // Keep one course in the cart and verify its total after each removal.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
-        //Checking the total price shown in the cart page with the calculated price
         let calculatedPrice = await cart.getCartTotalPrice();
         await expect(cart.priceLocator).toContainText(calculatedPrice.toString());
 
-        //Removing items one by one and checking the updated price each time
+        // Remove all but the final course, preserving the enrollment option throughout.
         for(let i=0; i<cart.coursesAll.length-1; i++ ){
 
             await cart.removeFromCart(cart.coursesAll[i]);
@@ -111,13 +110,11 @@ test.describe("LAC cart Page behaviours", () => {
             await expect(cart.enrollNowBtn).toBeVisible({ timeout: 3000 });
 
         }
-        //Clicking the enroll button
+        // Complete enrollment for the remaining course and verify the order ID.
         await cart.enrollNowBtn.click();
         await expect(cart.enrollNowBtnPopUp).toBeVisible({ timeout: 3000 });
-        //Check the Final price shown in the Pop-up
         await expect(cart.priceLocatorPopUp).toContainText(calculatedPrice.toString());
         await cart.fillPopUp();
-        //Clicking Enroll button in the pop-up
         await cart.enrollNowBtnPopUp.click();
         await expect(cart.orderIdLocator).toBeVisible({timeout: 3000});
         await expect(cart.orderIdLocator).toHaveText(/^order-[a-zA-Z0-9]+$/);
@@ -129,13 +126,12 @@ test.describe("LAC cart Page behaviours", () => {
 
     test("Removing all but one item from the cart and cancelling order from pop-up", async ({ page }) => {
 
-        //Checking if the cart contains all the courses added
+        // Keep one course in the cart and verify its total after each removal.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
-        //Checking the total price shown in the cart page with the calculated price
         let calculatedPrice = await cart.getCartTotalPrice();
         await expect(cart.priceLocator).toContainText(calculatedPrice.toString());
 
-        //Removing items one by one and checking the updated price each time
+        // Remove all but the final course before opening the enrollment pop-up.
         for(let i=0; i<cart.coursesAll.length-1; i++ ){
 
             await cart.removeFromCart(cart.coursesAll[i]);
@@ -144,13 +140,11 @@ test.describe("LAC cart Page behaviours", () => {
             await expect(cart.enrollNowBtn).toBeVisible({ timeout: 3000 });
 
         }
-        //Clicking the enroll button
+        // Open enrollment, fill the form, and cancel to confirm the cart remains unchanged.
         await cart.enrollNowBtn.click();
         await expect(cart.enrollNowBtnPopUp).toBeVisible({ timeout: 3000 });
-        //Check the Final price shown in the Pop-up
         await expect(cart.priceLocatorPopUp).toContainText(calculatedPrice.toString());
         await cart.fillPopUp();
-        //Clicking cancell button in the pop-up
         await cart.cancelBtnPopup.click();
         await expect(cart.priceLocator).toContainText(calculatedPrice.toString());
     });
