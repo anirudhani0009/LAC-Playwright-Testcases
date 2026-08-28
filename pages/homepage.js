@@ -1,5 +1,5 @@
 const { expect } = require("@playwright/test");
-const { timeStamp } = require("node:console");
+const courseData = JSON.parse(JSON.stringify(require("../assets/lac-courses.json")));
 
 // Page object model for the home page after login.
 // Encapsulates selectors and page-specific helpers for assertions.
@@ -15,15 +15,10 @@ class HomePage {
         this.homeOption = page.getByRole('link', {name: 'Home', excact: true});
         this.practiseOption = page.getByRole('link', {name: 'Practise', excact: true});
         this.signOutOption = page.getByRole('button', { name: 'Sign out', exact: true });
-        this.courses = {
-            selenium: "Selenium For Web Automation",
-            pwJava: "Playwright with Java",
-            swTesting: "Software Testing Course",
-            test: "test",
-            //pw: "playwright"
-        };
+        //Assign the imported JSON object to instance variable
+        this.courses = courseData;
         this.allAddtoCartButtons = page.locator('.course-card').getByRole('button', { name: 'Add to Cart' });
-        this.coursesToBuy = [this.courses.selenium, this.courses.pwJava, this.courses.swTesting];
+        this.coursesToBuy = [this.courses.course1, this.courses.course2, this.courses.course3];
         this.coursesAll = Object.values(this.courses);
         this.cartCountLocator = page.locator('span.count');
     }
@@ -74,6 +69,10 @@ class HomePage {
         await this.breadCrumbsBtn.click();
     }
 
+
+    async goTocart(){
+        await this.cart.click();
+    }
 
 }
 module.exports = HomePage;
