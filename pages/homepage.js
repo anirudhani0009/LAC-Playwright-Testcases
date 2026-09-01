@@ -18,8 +18,9 @@ class HomePage {
         //Assign the imported JSON object to instance variable
         this.courses = courseData;
         this.allAddtoCartButtons = page.locator('.course-card').getByRole('button', { name: 'Add to Cart' });
-        this.coursesToBuy = [this.courses.course1, this.courses.course2, this.courses.course3];
         this.coursesAll = Object.values(this.courses);
+        //this.coursesToBuy = [this.courses.course1, this.courses.course2];
+        this.coursesToBuy = this.getCourses(this.coursesAll);
         this.cartCountLocator = page.locator('span.count');
     }
 
@@ -72,6 +73,17 @@ class HomePage {
 
     async goTocart(){
         await this.cart.click();
+    }
+
+    getCourses(courses){
+        let newCourse = [];
+        for(let i=0; i<courses.length; i++ ){
+            if(i===1)
+                return newCourse;
+            else
+                newCourse[i] = courses[i];
+        }
+        return newCourse;
     }
 
 }

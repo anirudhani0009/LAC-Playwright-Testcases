@@ -1,7 +1,7 @@
 const { test, expect } = require("../fixtures/auth.js");
 
 test.describe("LAC Homepage", () => {
-    test("Adding and removing all 5 items in and out of the cart", async ({ auth }) => {
+    test("Adding and removing all items from JSON in and out of the cart", async ({ auth }) => {
         const { home } = auth;
 
         await home.addCourses(home.coursesAll);
@@ -20,11 +20,12 @@ test.describe("LAC Homepage", () => {
         }
     });
 
-    test("Adding and removing all the selected 3 items in and out of the cart", async ({ auth }) => {
+    test("Adding and removing all the selected items in and out of the cart", async ({ auth }) => {
         const { home } = auth;
 
         await home.addCourses(home.coursesToBuy);
-        await expect(home.cartCountLocator).toContainText("3");
+        const coursesToBuyCount = home.coursesToBuy.length;
+        await expect(home.cartCountLocator).toContainText(coursesToBuyCount.toString());
 
         for (const course of home.coursesToBuy) {
             const removeButton = home.getRemoveButton(course);
