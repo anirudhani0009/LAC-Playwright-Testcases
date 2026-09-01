@@ -1,39 +1,10 @@
-const { test, expect } = require("@playwright/test");
-const Login = require("../pages/loginpage.js");
-const Home = require("../pages/homepage.js");
-const Cart = require("../pages/cartpage.js");
+const { test, expect } = require("../fixtures/cartFixture.js");
 const LoginData = JSON.parse(JSON.stringify(require("../assets/lac-loginCred.json")));
 
 // These tests verify cart contents, totals, removal behavior, and enrollment flows.
 test.describe("LAC cart Page behaviours", () => {
-    let login;
-    let home;
-    let cart;
 
-    test.beforeEach(async ({ page }) => {
-        // Create page objects so each test can use the page-specific actions and locators.
-        login = new Login(page);
-        home = new Home(page);
-        cart = new Cart(page);
-
-        // Sign in and confirm that the authenticated homepage is available.
-        await login.navigateToLogin();
-        await expect(page.locator(login.header)).toBeVisible({ timeout: 3000 });
-        await login.signinToApplication(LoginData.username, LoginData.password);
-        await expect(page.locator(login.signinButton)).not.toBeVisible();
-        await expect(home.cart).toBeVisible({timeout: 3000 });
-
-        // Add every course from the test data so each test starts with the same cart contents.
-        await home.addCourses(home.coursesAll);
-        await expect(home.cartCountLocator).toContainText(Object.keys(home.courses).length.toString());
-
-        // Open the cart and confirm that enrollment is available.
-        await home.goTocart();
-        await expect(cart.enrollNowBtn).toBeVisible({timeout: 3000});
-
-    });
-
-    test("Verify Items and prices in the cart and pressing cancel from the pop-up", async ({ page }) => {
+    test("Verify Items and prices in the cart and pressing cancel from the pop-up", async ({ goTocart:{home, cart} }) => {
 
         // Confirm that all expected courses were added and that the displayed total is correct.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
@@ -49,7 +20,7 @@ test.describe("LAC cart Page behaviours", () => {
 
     });
 
-    test("Verify Items and prices in the cart and completing order", async ({ page }) => {
+    test("Verify Items and prices in the cart and completing order", async ({ goTocart:{home, cart} }) => {
 
         // Confirm the cart contents and total before starting enrollment.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
@@ -70,7 +41,7 @@ test.describe("LAC cart Page behaviours", () => {
         await expect(cart.priceLocator).toContainText("0");
     });
 
-    test("Removing all items one by one from the cart, checking the price and clicking on Shop now button", async ({ page }) => {
+    test("Removing all items one by one from the cart, checking the price and clicking on Shop now button", async ({ goTocart:{home, cart} }) => {
 
         // Confirm the starting cart contents and total.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
@@ -94,7 +65,7 @@ test.describe("LAC cart Page behaviours", () => {
     });
 
 
-    test("Removing all but one item from the cart and enrolling", async ({ page }) => {
+    test("Removing all but one item from the cart and enrolling", async ({ goTocart:{home, cart} }) => {
 
         // Keep one course in the cart and verify its total after each removal.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);
@@ -124,7 +95,7 @@ test.describe("LAC cart Page behaviours", () => {
         await expect(cart.priceLocator).toContainText("0");
     });
 
-    test("Removing all but one item from the cart and cancelling order from pop-up", async ({ page }) => {
+    test("Removing all but one item from the cart and cancelling order from pop-up", async ({ goTocart:{home, cart} }) => {
 
         // Keep one course in the cart and verify its total after each removal.
         await expect(cart.allremoveFromCartBtns).toHaveCount(Object.keys(home.courses).length);

@@ -1,20 +1,8 @@
-const {test, expect} = require("@playwright/test");
-const Login = require("../pages/loginpage.js");
+const {test, expect} = require("../fixtures/loginFixture.js");
 
 test.describe("Testing Social media buttons in Login Page", () => {
-    let login;
-
-    test.beforeEach(async ({ page }) => {
-        // Create the page objects before each test.
-        login = new Login(page);
-
-        // Navigate to the login page and verify the page is displayed.
-        await login.navigateToLogin();
-        await expect(page.locator(login.header)).toBeVisible({timeout: 3000});
-    });
-
     //Checking Youtube button
-    test("Should open Youtube in a new tab", async () => {
+    test("Should open Youtube in a new tab", async ({goToLogin:{login}}) => {
         const youtubeTab = await login.clickSocialButtonAndGetNewTab(login.youtubeBtn);
 
         //Verify the string in the URL
@@ -25,7 +13,7 @@ test.describe("Testing Social media buttons in Login Page", () => {
     })
 
     //Checking Twitter button
-    test("Should open Twitter in a new tab", async () => {
+    test("Should open Twitter in a new tab", async ({goToLogin:{login}}) => {
         const twitterTab = await login.clickSocialButtonAndGetNewTab(login.twitterBtn);
 
         //Verify the string in the URL
@@ -36,7 +24,7 @@ test.describe("Testing Social media buttons in Login Page", () => {
     })
 
     //Checking Linkedin button
-    test("Should open LinkedinTab in a new tab", async () => {
+    test("Should open LinkedinTab in a new tab", async ({goToLogin:{login}}) => {
         const linkedinTab = await login.clickSocialButtonAndGetNewTab(login.linkedinBtn);
 
         //Verify the string in the URL
@@ -47,7 +35,7 @@ test.describe("Testing Social media buttons in Login Page", () => {
     })
     
     //Checking Facebook button
-    test("Should open Facebook in a new tab", async () => {
+    test("Should open Facebook in a new tab", async ({goToLogin:{login}}) => {
         const facebookTab = await login.clickSocialButtonAndGetNewTab(login.facebookBtn);
 
         //Verify the string in the URL

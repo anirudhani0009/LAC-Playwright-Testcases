@@ -4,8 +4,7 @@ const LoginData = JSON.parse(JSON.stringify(require("../../assets/lac-loginCred.
 
 // Test suite for the login page and its validation behavior.
 test.describe("LAC Login Page for Authentication", () => {
-    test("Sign in with correct credentials", async ({ page, goToLogin }) => {
-        const { login } = goToLogin;
+    test("Sign in with correct credentials", async ({ page, goToLogin:{login} }) => {
         const home = new Home(page);
         // Submit valid credentials and confirm the login succeeds.
         await login.signinToApplication(LoginData.username, LoginData.password);
