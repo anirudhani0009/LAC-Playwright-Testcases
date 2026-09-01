@@ -1,25 +1,28 @@
 //Import the custom goToLogin fixture runner, NOT the default base test!
+// Authentication fixture - logs in user and navigates to homepage
+
 const { test: loginTest, expect } = require("./loginFixture.js");
 const Home = require("../pages/homepage.js");
 const LoginData = JSON.parse(JSON.stringify(require("../assets/lac-loginCred.json")));
 
 // Creates a reusable authenticated context for tests that start on the homepage.
 const test = loginTest.extend({
+    // Extends loginTest: login page setup + authenticate user with credentials
     auth: async ({ page, goToLogin }, use) => {
         // goToLogin is available here because we extended loginTest
         const { login } = goToLogin;
         const home = new Home(page);
 
-        /*// Log in once before each test and confirm that the homepage is ready.
-        await login.navigateToLogin();
-        await expect(page.locator(login.header)).toBeVisible({ timeout: 3000 }); */
+        // Perform login with credentials from JSON file
         await login.signinToApplication(LoginData.username, LoginData.password);
+        
+        // Verify login was successful - check that homepage elements are visible
         await expect(page.locator(login.signinButton)).not.toBeVisible();
         await expect(home.cart).toBeVisible({ timeout: 3000 });
         await expect(home.manageButton).toBeVisible({ timeout: 3000 });
         await expect(home.breadCrumbsBtn).toBeVisible({ timeout: 3000 });
 
-        // Expose both page objects so each test can focus on its scenario.
+        // Pass both page objects to test
         await use({ login, home });
     }
 });
