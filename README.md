@@ -1,107 +1,259 @@
 # LAC Playwright Automation
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Playwright-%23E5E5E5?style=for-the-badge&logo=playwright&logoColor=45ba4b" alt="Playwright" />
-  <img src="https://img.shields.io/badge/JavaScript-%23F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/Browser-Chromium-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Chromium" />
-</p>
+## Overview
 
-A professional end-to-end test automation suite for the LAC web application, built with Playwright and JavaScript. This project validates authentication, homepage interactions, cart functionality, and social media navigation flows using a clean Page Object Model (POM) structure.
+**LAC Playwright Automation** is a comprehensive, production-grade UI automation testing framework designed to validate critical user workflows on the LAC learning platform. Built with **Playwright Test** and following industry-standard **Page Object Model (POM)** architecture, this project ensures robust, maintainable, and scalable test automation.
+
+The suite provides end-to-end validation across authentication flows, user registration, course management, shopping cart operations, navigation, and third-party integrations—enabling teams to catch regressions early and maintain high-quality user experiences.
+
+### Key Highlights
+
+- ✅ **Page Object Model Architecture** – Clean separation of concerns and reusable page components
+- ✅ **Fixture-Based Authentication** – Shared authenticated sessions for efficient test execution
+- ✅ **Comprehensive Test Coverage** – Authentication, signup, homepage, cart, and social media validation
+- ✅ **HTML Reporting** – Detailed test reports with full visibility into pass/fail results
+- ✅ **Parallel Execution Ready** – Optimized for concurrent test runs
+- ✅ **Easy Local & CI/CD Integration** – Works seamlessly with GitHub Actions and other CI platforms
+
+## Target Application
+
+This automation suite is built and maintained against:
+
+- **Production App:** https://freelance-learn-automation.vercel.app
+- **Framework:** Modern learning platform with course catalog, user authentication, and shopping cart functionality
 
 ## Overview
 
-This repository contains automated UI tests for the LAC platform, covering the most critical user journeys:
+The suite is designed to validate that the application behaves correctly across the main user journeys:
 
-- Login flow and validation errors
-- Signup form validation
-- Homepage course interactions
-- Cart behavior and checkout flow
-- Social media link navigation
+- User authentication and validation
+- New user signup flow
+- Course selection and cart updates
+- Course removal behavior
+- Sidebar navigation checks
+- Social media buttons opening correct external pages
 
-## Tech Stack
+## Tech Stack & Dependencies
 
-- Playwright Test
-- JavaScript (CommonJS)
-- Page Object Model pattern
-- HTML report generation
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **JavaScript (ES6+)** | Latest | Primary programming language |
+| **Node.js** | 14.x or higher | Runtime environment |
+| **Playwright** | Latest | Cross-browser automation framework |
+| **Playwright Test** | Latest | Built-in test runner with parallelization |
+| **HTML Reporter** | Built-in | Test results visualization |
 
-## Project Structure
+## Prerequisites
 
-```text
-LAC-Playwright/
-├── assets/
-│   ├── lac-courses.json
-│   └── lac-loginCred.json
-├── pages/
-│   ├── cartpage.js
-│   ├── homepage.js
-│   ├── loginpage.js
-│   └── signup.js
-├── tests/
+Before setting up this project, ensure you have:
+
+- **Node.js** (v14.0 or later) – [Download here](https://nodejs.org/)
+- **npm** (v6.0 or later) – Usually bundled with Node.js
+- **Git** – For version control
+- **A modern code editor** – VS Code recommended
+- **Stable internet connection** – For accessing the target application and installing dependencies
+
+## Project Architecture
+
+### Directory Structure
+
+```bash
+.
+├── assets/                          # Test data and configuration
+│   ├── lac-courses.json            # Course catalog data
+│   └── lac-loginCred.json          # Test user credentials
+│
+├── fixtures/                        # Reusable test setup
+│   ├── auth.js                     # Shared authentication fixture
+│   ├── cartFixture.js              # Cart operations fixture
+│   ├── loginFixture.js             # Login helper fixture
+│   └── signupFixture.js            # Signup helper fixture
+│
+├── pages/                          # Page Object Model classes
+│   ├── cartpage.js                 # Shopping cart page interactions
+│   ├── homepage.js                 # Homepage course selections
+│   ├── loginpage.js                # Login page elements & methods
+│   └── signup.js                   # Signup form interactions
+│
+├── tests/                          # Test specifications
 │   ├── auth/
-│   │   ├── login.spec.js
-│   │   └── signup.spec.js
-│   ├── cartpage.spec.js
-│   ├── homepage.spec.js
-│   └── socialMedia.spec.js
-├── playwright.config.js
-├── package.json
-├── .gitignore
-└── README.md
+│   │   ├── login.spec.js           # Login validation tests
+│   │   └── signup.spec.js          # Signup validation tests
+│   ├── cartpage.spec.js            # Cart functionality tests
+│   ├── homepage.spec.js            # Homepage interaction tests
+│   └── socialMedia.spec.js         # Social media link verification
+│
+├── playwright-report/              # Generated HTML reports
+├── test-results/                   # Test execution artifacts
+├── .gitignore                      # Git ignore rules
+├── package.json                    # Project dependencies & metadata
+├── playwright.config.js            # Playwright configuration
+└── README.md                       # This file
 ```
 
-## Test Coverage
+### Design Pattern: Page Object Model (POM)
 
-### Authentication
-- Valid login attempt
-- Incorrect password handling
-- Incorrect email handling
-- Empty form validation
-- Missing email/password validation
+This project follows the **Page Object Model** design pattern:
 
-### Registration
-- Successful signup flow
-- Required field validation
-- Interest checkbox verification
-- State selection validation
-- Hobbies validation
-- Login link from signup page
+- **Page Classes** – Each web page is represented as a class encapsulating selectors and interactions
+- **Reusable Methods** – Common actions (login, add to cart, navigate) are methods on page classes
+- **Clean Test Code** – Test files focus on business logic rather than DOM manipulation
+- **Maintainability** – UI changes require updates in one place (page class), not scattered across tests
+- **Scalability** – New tests can quickly reuse existing page methods
 
-### Homepage
-- Add and remove items from cart
-- Add/remove selected courses
-- Add/remove each course individually
-- Sidebar and navigation checks
+## Test Suite Capabilities
 
-### Cart
-- Item and price validation
-- Continue/cancel order scenarios
-- Remove items and verify totals
+This automation suite provides comprehensive validation across five key user journey areas:
 
-### Social Media
-- YouTube link opens in a new tab
-- Twitter link opens in a new tab
-- LinkedIn link opens in a new tab
-- Facebook link opens in a new tab
+### 1. Authentication & Login Validation
+
+**File:** [tests/auth/login.spec.js](tests/auth/login.spec.js)
+
+Validates secure user authentication with comprehensive edge case coverage:
+
+- ✅ Valid user sign-in with correct credentials
+- ✅ Invalid password handling and error messaging
+- ✅ Invalid email format validation
+- ✅ Empty email field validation
+- ✅ Empty password field validation
+- ✅ Missing password error handling
+- ✅ Required field error message display
+- ✅ Session persistence post-login
+
+**Key Test Scenarios:**
+- Valid credentials authentication flow
+- Security: Incorrect credential rejection
+- Input validation: Format and presence checks
+- User feedback: Clear error messaging
+
+### 2. User Registration (Signup) Testing
+
+**File:** [tests/auth/signup.spec.js](tests/auth/signup.spec.js)
+
+Ensures new user registration flows work smoothly with proper validation:
+
+- ✅ Successful registration with all required fields
+- ✅ Name field validation and requirements
+- ✅ Email field validation and format checking
+- ✅ Password field validation and strength requirements
+- ✅ Interests selection validation
+- ✅ State selection validation
+- ✅ Hobbies selection validation
+- ✅ Navigation back to login page
+- ✅ Data persistence across page transitions
+
+**Key Test Scenarios:**
+- Complete registration happy path
+- Individual field validation and error handling
+- Multi-step form progression
+- Navigation and session management
+
+### 3. Homepage & Course Catalog
+
+**File:** [tests/homepage.spec.js](tests/homepage.spec.js)
+
+Validates the core course browsing and selection experience:
+
+- ✅ Viewing course catalog with descriptions and pricing
+- ✅ Adding multiple courses to shopping cart
+- ✅ Removing individual courses from cart
+- ✅ Cart item count updates
+- ✅ Course availability and filtering
+- ✅ Sidebar navigation visibility and functionality
+- ✅ Page transitions and state management
+
+**Key Test Scenarios:**
+- Course discovery and exploration
+- Cart operations (add/remove)
+- Bulk and individual course management
+- Navigation between sections
+
+### 4. Shopping Cart Operations
+
+**File:** [tests/cartpage.spec.js](tests/cartpage.spec.js)
+
+Ensures shopping cart reliability and accuracy:
+
+- ✅ Displaying all added courses with prices
+- ✅ Accurate total price calculation
+- ✅ Adding courses to cart from product pages
+- ✅ Removing courses from cart with confirmation
+- ✅ Quantity updates and price recalculation
+- ✅ Cart persistence across sessions
+- ✅ Empty cart state handling
+- ✅ Checkout readiness validation
+
+**Key Test Scenarios:**
+- Cart accuracy and calculations
+- Item lifecycle (add/update/remove)
+- Price and total validation
+- Cart state management
+
+### 5. Social Media Integration
+
+**File:** [tests/socialMedia.spec.js](tests/socialMedia.spec.js)
+
+Verifies external social media links function correctly:
+
+- ✅ YouTube channel link opens in new tab
+- ✅ Twitter/X profile link opens in new tab
+- ✅ LinkedIn company page link opens in new tab
+- ✅ Facebook page link opens in new tab
+- ✅ Correct URLs are targeted
+- ✅ Links open in separate browser contexts
+
+**Key Test Scenarios:**
+- Multi-tab page handling
+- URL validation and verification
+- External link integrity
 
 ## Getting Started
 
-### Prerequisites
+### Step 1: Clone the Repository
 
-- Node.js 18 or newer
-- npm
+```bash
+git clone https://github.com/yourusername/LAC-Playwright.git
+cd LAC-Playwright
+```
 
-### Installation
+### Step 2: Install Node.js Dependencies
 
 ```bash
 npm install
 ```
 
-### Install Browser Dependencies
+This installs all required packages defined in `package.json`, including Playwright and the test runner.
+
+### Step 3: Install Playwright Browsers
 
 ```bash
 npx playwright install
 ```
+
+This downloads the necessary browser binaries (Chromium, Firefox, WebKit) required for cross-browser testing.
+
+**For Linux environments** (with additional system dependencies):
+
+```bash
+npx playwright install --with-deps
+```
+
+### Step 4: Verify Installation
+
+```bash
+npx playwright --version
+```
+
+You should see the installed Playwright version displayed.
+
+### Step 5: (Optional) Configure Test Data
+
+Update credentials and test data in the following files:
+
+- `assets/lac-loginCred.json` – Add your test user credentials
+- `assets/lac-courses.json` – Ensure course data matches the target application
+
+## Running Tests
 
 ### Run All Tests
 
@@ -109,32 +261,451 @@ npx playwright install
 npx playwright test
 ```
 
+Executes the entire test suite with default configuration (headless mode, sequential or parallel based on config).
+
+### Run Tests in Headed Mode
+
+```bash
+npx playwright test --headed
+```
+
+Launches browser windows showing test execution in real-time. Useful for debugging and visual verification.
+
 ### Run a Specific Test File
 
 ```bash
 npx playwright test tests/auth/login.spec.js
 ```
 
-### Open HTML Report
+Runs only the login tests.
+
+```bash
+npx playwright test tests/cartpage.spec.js
+```
+
+Runs only the cart page tests.
+
+### Run Tests by Name (Pattern Matching)
+
+```bash
+npx playwright test -g "Add multiple courses"
+```
+
+Runs tests matching the specified pattern. The `-g` flag filters tests by name.
+
+### Run Tests with Debugging
+
+```bash
+npx playwright test --debug
+```
+
+Opens Playwright Inspector for step-by-step debugging with code navigation and DOM inspection.
+
+### Run Tests in Specific Browser
+
+```bash
+npx playwright test --project=chromium
+npx playwright test --project=firefox
+npx playwright test --project=webkit
+```
+
+Run tests against a specific browser engine.
+
+### Run Tests with Verbose Output
+
+```bash
+npx playwright test --reporter=verbose
+```
+
+Displays detailed information about each test step and assertion.
+
+### Run Tests with Screenshots on Failure
+
+```bash
+npx playwright test --screenshot=only-on-failure
+```
+
+Captures screenshots only when tests fail, useful for debugging.
+
+## Test Reporting
+
+### View HTML Report
+
+After test execution, view the comprehensive HTML report:
 
 ```bash
 npx playwright show-report
 ```
 
+This opens the report in your default browser showing:
+- Test execution timeline
+- Pass/fail status for each test
+- Failed test details and error messages
+- Screenshots and videos (if configured)
+- Timing information
+
+### Report Artifacts
+
+Reports are stored in:
+- `playwright-report/` – HTML report directory
+- `test-results/` – Raw test results and logs
+
 ## Configuration
 
-The project is configured in [playwright.config.js](playwright.config.js) and currently targets the Chromium browser project with HTML reporting enabled.
+### Playwright Configuration File
 
-## Notes
+Edit `playwright.config.js` to customize test behavior:
 
-- Test data is stored in the [assets](assets) folder.
-- Page actions and selectors are centralized in the [pages](pages) folder to keep the tests readable and maintainable.
-- The project follows a structured Page Object Model rather than placing all selectors directly in test files.
+```javascript
+// Key configuration options
+{
+  testDir: './tests',                    // Directory containing test files
+  fullyParallel: true,                   // Run tests in parallel
+  forbidOnly: !!process.env.CI,          // Fail if test.only() used in CI
+  retries: process.env.CI ? 2 : 0,       // Retry failed tests (CI only)
+  workers: process.env.CI ? 1 : undefined, // Workers per browser
+  reporter: 'html',                      // HTML reporter
+  use: {
+    baseURL: 'https://freelance-learn-automation.vercel.app',
+    trace: 'on-first-retry',             // Trace failed tests
+  },
+  webServer: {                           // Optional: start local server
+    // command: 'npm run start',
+    // port: 3000,
+  }
+}
+```
+
+### Fixtures (Reusable Test Setup)
+
+The `fixtures/` directory contains reusable setup logic:
+
+- **auth.js** – Provides authenticated browser context for logged-in tests
+- **cartFixture.js** – Pre-configured cart state for cart-specific tests
+- **loginFixture.js** – Reusable login helper
+- **signupFixture.js** – Reusable signup helper
+
+Usage in tests:
+```javascript
+test('Add course to cart', async ({ page, authenticatedContext }) => {
+  // Test uses pre-authenticated session
+});
+```
+
+## Best Practices
+
+### 1. Page Object Model Conventions
+
+- **Selectors First** – Define all DOM selectors at the class level
+- **Action Methods** – Create descriptive methods for user interactions (e.g., `fillLoginForm()`, `clickAddToCart()`)
+- **No Direct Assertions in Pages** – Keep page classes free of assertions; use them only in tests
+- **Reusable Workflows** – Create helper methods for complex multi-step interactions
+
+Example Page Class Structure:
+```javascript
+class LoginPage {
+  constructor(page) {
+    this.page = page;
+    // Selectors
+    this.emailInput = '[data-testid="email-input"]';
+    this.passwordInput = '[data-testid="password-input"]';
+    this.loginButton = 'button:has-text("Sign In")';
+  }
+
+  async goto() {
+    await this.page.goto('/login');
+  }
+
+  async login(email, password) {
+    await this.page.fill(this.emailInput, email);
+    await this.page.fill(this.passwordInput, password);
+    await this.page.click(this.loginButton);
+  }
+}
+```
+
+### 2. Test Organization
+
+- **Descriptive Test Names** – Use clear, business-language test names
+- **One Assertion Focus** – Each test should validate a single behavior when possible
+- **Setup & Teardown** – Use `test.beforeEach()` for common setup and fixtures for authentication
+- **Avoid Test Interdependencies** – Each test should run independently
+
+### 3. Fixture Best Practices
+
+- **Use Fixtures for Cross-Cutting Concerns** – Authentication, database state, test data
+- **Compose Fixtures** – Combine base fixtures to create more complex scenarios
+- **Clean Up Resources** – Ensure teardown code runs to close connections and clear state
+
+### 4. Performance & Reliability
+
+- **Wait Strategies** – Use explicit waits (`.waitForSelector()`, `.waitForNavigation()`) instead of sleeps
+- **Retry Strategies** – Configure retries for flaky tests but investigate root causes
+- **Headless Execution** – Run headless in CI/CD for speed; use headed mode locally for debugging
+- **Parallel Execution** – Enable parallel test runs to reduce total execution time
+
+### 5. Data Management
+
+- **Separate Test Data** – Keep test data in `assets/` directory, not hardcoded in tests
+- **Environment-Specific Config** – Use `.env` files for different environments (dev, staging, production)
+- **Reset Between Tests** – Clear test users and data between test runs when necessary
+
+## Troubleshooting
+
+### Common Issues & Solutions
+
+#### Issue: Tests Timeout or Hang
+
+**Solution:**
+- Increase timeout in `playwright.config.js`: `use: { timeout: 30000 }`
+- Check target application availability: `https://freelance-learn-automation.vercel.app`
+- Add explicit waits: `await page.waitForLoadState('networkidle')`
+
+#### Issue: "Browser Not Found" Error
+
+**Solution:**
+```bash
+# Reinstall Playwright browsers
+npx playwright install
+
+# For Linux with dependencies
+npx playwright install --with-deps
+```
+
+#### Issue: Tests Pass Locally but Fail in CI/CD
+
+**Solution:**
+- Check environment variables and credentials are set in CI/CD
+- Ensure target application is accessible from CI environment
+- Consider network delays; increase timeout values for CI
+- Use `--reporter=verbose` to capture detailed logs
+
+#### Issue: "Element Not Found" Errors
+
+**Solution:**
+- Verify selectors match current application DOM
+- Add explicit waits before interaction: `await page.waitForSelector(selector)`
+- Use Page Inspector to verify element locators
+- Check for dynamic content loading delays
+
+#### Issue: Flaky Tests (Intermittent Failures)
+
+**Solution:**
+- Avoid hard-coded `setTimeout()` calls
+- Replace with explicit waits: `waitForNavigation()`, `waitForLoadState()`
+- Increase timeout values moderately
+- Review test logs for timing issues
+- Enable tracing: `trace: 'on-first-retry'` in config
+
+#### Issue: Tests Run Out of Memory
+
+**Solution:**
+- Reduce parallel worker count: `workers: 4` in config
+- Close browser contexts properly in fixtures
+- Monitor test memory usage with `--reporter=verbose`
+
+### Debugging Techniques
+
+#### Using Playwright Inspector
+
+```bash
+npx playwright test --debug
+```
+
+- Step through test execution line-by-line
+- Inspect DOM and element selectors
+- Execute arbitrary JavaScript in page context
+
+#### Capturing Traces
+
+Add to `playwright.config.js`:
+```javascript
+use: {
+  trace: 'on-first-retry',
+  screenshot: 'only-on-failure',
+  video: 'retain-on-failure'
+}
+```
+
+Traces help understand what happened before a failure.
+
+#### Verbose Logging
+
+```bash
+DEBUG=pw:api npx playwright test
+```
+
+Shows detailed Playwright API calls and timing information.
+
+## CI/CD Integration
+
+### GitHub Actions Example
+
+Create `.github/workflows/tests.yml`:
+
+```yaml
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+```
+
+## Advanced Topics
+
+### Running Tests Against Different Environments
+
+```bash
+# Staging environment
+BASE_URL=https://staging.freelance-learn.com npx playwright test
+
+# Production environment
+BASE_URL=https://freelance-learn-automation.vercel.app npx playwright test
+```
+
+### Parallel Test Execution with Custom Configuration
+
+Modify `playwright.config.js`:
+```javascript
+{
+  workers: process.env.CI ? 4 : 8,    // More workers locally
+  fullyParallel: true,                 // Run all tests in parallel
+  retries: process.env.CI ? 2 : 0      // Retry failed tests in CI
+}
+```
+
+### Cross-Browser Testing
+
+```bash
+npx playwright test --project=chromium --project=firefox --project=webkit
+```
+
+All three browsers run sequentially by default. Adjust workers for parallel browser execution.
+
+## Project Maintenance
+
+### Keeping Dependencies Updated
+
+```bash
+# Check for outdated packages
+npm outdated
+
+# Update all packages
+npm update
+
+# Update Playwright specifically
+npm install @playwright/test@latest
+npx playwright install
+```
+
+### Regular Tasks
+
+- **Weekly:** Run full test suite against target application
+- **Monthly:** Update dependencies and review breaking changes
+- **Quarterly:** Audit test coverage and identify new test scenarios
+- **As Needed:** Update selectors when application UI changes
+
+## Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/add-new-tests`
+3. **Make** your changes following the existing code style
+4. **Test** your changes: `npx playwright test`
+5. **Commit** with descriptive messages: `git commit -m "Add tests for feature X"`
+6. **Push** to your branch: `git push origin feature/add-new-tests`
+7. **Submit** a Pull Request with detailed description of changes
+
+### Code Style Guidelines
+
+- Use camelCase for function and variable names
+- Use PascalCase for class names
+- Add descriptive comments for complex logic
+- Follow existing project structure for new test files
+- Ensure all tests pass before submitting PR
+
+## FAQ
+
+**Q: How do I run tests against a different application URL?**
+A: Set the `baseURL` in `playwright.config.js` or use: `BASE_URL=your-url npx playwright test`
+
+**Q: Can I run a single test in debug mode?**
+A: Yes: `npx playwright test tests/auth/login.spec.js --debug`
+
+**Q: How do I take screenshots during test execution?**
+A: Add `await page.screenshot({ path: 'screenshot.png' })` in your test code.
+
+**Q: What should I do if a selector breaks?**
+A: Update the selector in the corresponding page class file under `pages/`
+
+**Q: Can I run tests on a local server?**
+A: Yes, configure `webServer` in `playwright.config.js` to start your local server before tests run.
+
+## Support & Resources
+
+- **Playwright Documentation:** https://playwright.dev
+- **Playwright Test Documentation:** https://playwright.dev/docs/intro
+- **Page Object Model Pattern:** https://playwright.dev/docs/pom
+- **Report Issues:** Submit via GitHub Issues
+
+## Performance Benchmarks
+
+Expected test execution times (approximate):
+
+- **Login Tests:** 5-10 seconds per test
+- **Signup Tests:** 8-15 seconds per test
+- **Cart Operations:** 10-20 seconds per test
+- **Homepage Tests:** 15-30 seconds per test
+- **Social Media Tests:** 5-10 seconds per test
+
+**Full Suite (Parallel):** ~2-3 minutes | **Full Suite (Sequential):** ~8-10 minutes
 
 ## License
 
-This project is licensed under the ISC license.
+This project is licensed under the **ISC License** – see [package.json](package.json) for details.
+
+## Author & Credits
+
+**Built By:** QA Automation Engineer  
+**Purpose:** Learning and automation practice for real-world UI testing workflows  
+**Last Updated:** 2024
 
 ---
 
-Built for reliable UI regression testing and continuous quality assurance.
+## Quick Reference
+
+| Task | Command |
+|------|---------|
+| Install dependencies | `npm install` |
+| Install browsers | `npx playwright install` |
+| Run all tests | `npx playwright test` |
+| Run headed mode | `npx playwright test --headed` |
+| Run single file | `npx playwright test tests/auth/login.spec.js` |
+| Debug tests | `npx playwright test --debug` |
+| View report | `npx playwright show-report` |
+| Run specific test | `npx playwright test -g "test name"` |
+
+---
+
+**For detailed setup instructions or additional help, please refer to the sections above or consult the Playwright documentation.**
