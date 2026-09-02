@@ -1,5 +1,5 @@
 const {expect} = require("@playwright/test");
-const courseData = JSON.parse(JSON.stringify(require("../assets/lac-courses.json")));
+const courseData = require("../assets/lac-courses.json");
 
 // Page object model for the cart page.
 // Keeps cart locators and reusable cart actions in one place.

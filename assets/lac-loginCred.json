@@ -3,5 +3,8 @@
     "password":"admin@123",
     "signupname":"Test123",
     "fakeusername":"fake@gmail.com",
-    "fakepassword":"123456798"
+    "fakepassword":"123456798",
+    "nonusername1":"user",
+    "nonusername2":"user.example.com",
+    "incompleteusername":"use@"
 }

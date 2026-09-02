@@ -1,5 +1,5 @@
 const {expect} = require("@playwright/test");
-
+const LoginData = require("../assets/lac-loginCred.json");
 // Page object model for the login page.
 // This class keeps all login-related selectors and actions in one place.
 class LoginPage{
@@ -25,7 +25,10 @@ class LoginPage{
                 wrongEmail: "USER Email Doesn't Exist",
                 allEmpty: "Email and Password is required",
                 emptyEmail: "Email is required",
-                emptyPassword: "Password is required"
+                emptyPassword: "Password is required",
+                wrongEmailFormat1: `Please include an '@' in the email address. '${LoginData.nonusername1}' is missing an '@'.`,
+                wrongEmailFormat2: `Please include an '@' in the email address. '${LoginData.nonusername2}' is missing an '@'.`,
+                incompleteEmail: `Please enter a part following '@'. '${LoginData.incompleteusername}' is incomplete.`
             },           
             // Builds an XPath locator for the selected error message. used in fun getErrorLocator(errorkey)
             error: (msg) => {
@@ -38,6 +41,12 @@ class LoginPage{
         this.linkedinBtn = page.locator('a[href*="linkedin.com"]').first();
         this.facebookBtn = page.locator('a[href*="facebook.com"]').first();
     }
+
+    // Shortcut getter for getting the messages in a clean way
+    get expectedMsg(){
+        return this.errorMsg.messages;
+    }
+
 
     // Returns a Playwright locator for an error based on a key from the messages map.
     getErrorLocator(errorkey){
@@ -55,6 +64,12 @@ class LoginPage{
         await this.page.fill(this.email, email);
         await this.page.fill(this.password, password);
         await this.page.click(this.signinButton);
+    }
+
+    async signinToApplicationWithEnter(email,password){
+        await this.page.fill(this.email, email);
+        await this.page.fill(this.password, password);
+        await this.page.locator(this.password).press('Enter');
     }
 
     // Clicks the signup link to go to the signup page.

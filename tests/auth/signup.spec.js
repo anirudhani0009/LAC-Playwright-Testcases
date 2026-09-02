@@ -1,6 +1,6 @@
 
 const { test, expect } = require("../../fixtures/signupFixture.js");
-const LoginData = JSON.parse(JSON.stringify(require("../../assets/lac-loginCred.json")));
+const LoginData = require("../../assets/lac-loginCred.json");
 
 // Test suite: Validates signup page form fields and their requirements
 // Covers: complete signup flow, individual field validation, required field checks, navigation

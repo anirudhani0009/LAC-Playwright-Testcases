@@ -3,7 +3,7 @@
 
 const { test: loginTest, expect } = require("./loginFixture.js");
 const Home = require("../pages/homepage.js");
-const LoginData = JSON.parse(JSON.stringify(require("../assets/lac-loginCred.json")));
+const LoginData = require("../assets/lac-loginCred.json");
 
 // Creates a reusable authenticated context for tests that start on the homepage.
 const test = loginTest.extend({
