@@ -12,7 +12,7 @@ test.describe("LAC Login Page - Positive cases", () => {
         const home = new Home(page);
 
         // Submit valid credentials for successful authentication
-        await login.signinToApplication(LoginData.username, LoginData.password);
+        await login.signinToApplication(process.env.LAC_USERNAME, process.env.LAC_PASSWORD);
 
         // Verify successful login: sign-in button should NOT be visible (no longer on login page)
         await expect(page.locator(login.signinButton)).not.toBeVisible();
@@ -27,7 +27,7 @@ test.describe("LAC Login Page - Positive cases", () => {
         const home = new Home(page);
 
         // Submit valid credentials for successful authentication
-        await login.signinToApplicationWithEnter(LoginData.username, LoginData.password);
+        await login.signinToApplicationWithEnter(process.env.LAC_USERNAME, process.env.LAC_PASSWORD);
 
         // Verify successful login: sign-in button should NOT be visible (no longer on login page)
         await expect(page.locator(login.signinButton)).not.toBeVisible();
@@ -54,7 +54,7 @@ test.describe("LAC Login Page - Nagative cases", () => {
                 emptyPassword: "Password is required"
         */
         // Use a valid email but wrong password and verify the error is shown.
-        await login.signinToApplication(LoginData.username, LoginData.fakepassword);
+        await login.signinToApplication(process.env.LAC_USERNAME, LoginData.fakepassword);
         await expect(page.locator(login.signinButton)).toBeVisible();
 
         // Verify correct error message displays for password mismatch
@@ -66,7 +66,7 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // EXPECTED: Login fails and error message "USER Email Doesn't Exist" displays
 
         // Attempt login with fake/non-existent email
-        await login.signinToApplication(LoginData.fakeusername, LoginData.password);
+        await login.signinToApplication(LoginData.fakeusername, process.env.LAC_PASSWORD);
 
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
@@ -80,7 +80,7 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // EXPECTED: Login fails and error message "Please include an '@' in the email address. 'user' is missing an '@'." from validation message
 
         // Attempt login with incorrect email
-        await login.signinToApplication(LoginData.nonusername1, LoginData.password);
+        await login.signinToApplication(LoginData.nonusername1, process.env.LAC_PASSWORD);
 
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
@@ -94,7 +94,7 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // EXPECTED: Login fails and error message "Please include an '@' in the email address. 'user.example.com' is missing an '@'." from validation message
 
         // Attempt login with incorrect email
-        await login.signinToApplication(LoginData.nonusername2, LoginData.password);
+        await login.signinToApplication(LoginData.nonusername2, process.env.LAC_PASSWORD);
 
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
@@ -108,7 +108,7 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // EXPECTED: Login fails and error message "Please enter a part following '@'. '${LoginData.incompleteusername}' is incomplete." from validation message
 
         // Attempt login with Incomplete email
-        await login.signinToApplication(LoginData.incompleteusername, LoginData.password);
+        await login.signinToApplication(LoginData.incompleteusername, process.env.LAC_PASSWORD);
 
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
@@ -164,7 +164,7 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // EXPECTED: Form validation fails with error "Email is required"
 
         // Submit form with empty email but valid password
-        await login.signinToApplication("", LoginData.password);
+        await login.signinToApplication("", process.env.LAC_PASSWORD);
 
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
@@ -178,7 +178,7 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // EXPECTED: Form validation fails with error "Password is required"
 
         // Submit form with valid email but empty password
-        await login.signinToApplication(LoginData.username, "");
+        await login.signinToApplication(process.env.LAC_USERNAME, "");
 
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();

@@ -3,7 +3,6 @@
 
 const { test: loginTest, expect } = require("./loginFixture.js");
 const Home = require("../pages/homepage.js");
-const LoginData = require("../assets/lac-loginCred.json");
 
 // Creates a reusable authenticated context for tests that start on the homepage.
 const test = loginTest.extend({
@@ -14,7 +13,7 @@ const test = loginTest.extend({
         const home = new Home(page);
 
         // Perform login with credentials from JSON file
-        await login.signinToApplication(LoginData.username, LoginData.password);
+        await login.signinToApplication(process.env.LAC_USERNAME, process.env.LAC_PASSWORD);
         
         // Verify login was successful - check that homepage elements are visible
         await expect(page.locator(login.signinButton)).not.toBeVisible();

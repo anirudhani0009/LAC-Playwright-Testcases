@@ -1,4 +1,5 @@
-// @ts-check
+// playwright.config.js
+import 'dotenv/config'; // Loads .env variables automatically
 import { defineConfig, devices } from '@playwright/test';
 
 /**
