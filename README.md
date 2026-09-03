@@ -9,7 +9,7 @@ The suite provides end-to-end checks across login validation, signup form requir
 ### Key Highlights
 
 - ✅ **Page Object Model Architecture** – Clean separation of concerns and reusable page components
-- ✅ **Fixture-Based Authentication** – Shared authenticated sessions for efficient test execution
+- ✅ **Fixture-Based Authentication** – Reusable login setup for authenticated tests
 - ✅ **Focused Risk-Based Coverage** – Authentication, signup validation, homepage, cart, and social media checks
 - ✅ **HTML Reporting** – Detailed test reports with full visibility into pass/fail results
 - ✅ **Parallel Execution Ready** – Optimized for concurrent test runs
@@ -397,15 +397,18 @@ Edit `playwright.config.js` to customize test behavior:
 
 The `fixtures/` directory contains reusable setup logic:
 
-- **auth.js** – Provides authenticated browser context for logged-in tests
+- **auth.js** – Logs in and provides `login` and `home` page objects for authenticated tests
 - **cartFixture.js** – Pre-configured cart state for cart-specific tests
 - **loginFixture.js** – Reusable login helper
 - **signupFixture.js** – Reusable signup helper
 
 Usage in tests:
 ```javascript
-test('Add course to cart', async ({ page, authenticatedContext }) => {
-  // Test uses pre-authenticated session
+const { test } = require('./fixtures/auth.js');
+
+test('Add course to cart', async ({ auth }) => {
+  const { home } = auth;
+  // Test starts on the authenticated homepage
 });
 ```
 

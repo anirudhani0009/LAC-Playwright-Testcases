@@ -1,6 +1,6 @@
 // playwright.config.js
-import 'dotenv/config'; // Loads .env variables automatically
-import { defineConfig, devices } from '@playwright/test';
+require('dotenv/config'); // Loads .env variables automatically
+const { defineConfig, devices } = require('@playwright/test');
 
 /**
  * Read environment variables from file.
@@ -13,7 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-export default defineConfig({
+module.exports = defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,

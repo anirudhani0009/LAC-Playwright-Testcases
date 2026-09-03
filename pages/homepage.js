@@ -11,7 +11,7 @@ class HomePage {
         // Locator for the Manage button shown on the logged-in homepage.
         this.manageButton = page.locator("span", { hasText: "Manage" });
         this.cart = page.locator("button.cartBtn", { hasText: "Cart" });
-        this.breadCrumbsBtn = page.getByRole('img', { name: 'menu', excact: true});
+        this.breadCrumbsBtn = page.getByRole('img', { name: 'menu', exact: true});
         this.homeOption = page.getByRole('link', {name: 'Home', excact: true});
         this.practiseOption = page.getByRole('link', {name: 'Practise', excact: true});
         this.signOutOption = page.getByRole('button', { name: 'Sign out', exact: true });
