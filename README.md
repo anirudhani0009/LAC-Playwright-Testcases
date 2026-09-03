@@ -83,6 +83,11 @@ Before setting up this project, ensure you have:
 │   ├── homepage.spec.js            # Homepage interaction tests
 │   └── socialMedia.spec.js         # Social media link verification
 │
+├── docs/                           # QA strategy and reporting examples
+│   ├── test-strategy.md             # Scope, risks, and test approach
+│   ├── coverage-matrix.md           # Feature-to-test coverage mapping
+│   └── defect-report-example.md     # Illustrative defect report
+│
 ├── playwright-report/              # Generated HTML reports
 ├── test-results/                   # Test execution artifacts
 ├── .gitignore                      # Git ignore rules
@@ -90,6 +95,10 @@ Before setting up this project, ensure you have:
 ├── playwright.config.js            # Playwright configuration
 └── README.md                       # This file
 ```
+
+### QA Documentation
+
+The [QA test strategy](docs/test-strategy.md) explains the risk-based scope, test-design decisions, and intentional exclusions. The [coverage matrix](docs/coverage-matrix.md) maps user risks to executable tests, while the [defect report example](docs/defect-report-example.md) demonstrates clear QA communication.
 
 ### Design Pattern: Page Object Model (POM)
 
@@ -221,7 +230,7 @@ This installs all required packages defined in `package.json`, including Playwri
 npx playwright install
 ```
 
-This downloads the Playwright browser binaries. The current configuration runs the suite against Chromium; Firefox and WebKit projects are not enabled yet.
+This downloads the Playwright browser binaries. The current configuration runs the suite against Chromium, Firefox, and WebKit.
 
 **For Linux environments** (with additional system dependencies):
 
@@ -305,10 +314,12 @@ Opens Playwright Inspector for step-by-step debugging with code navigation and D
 ### Run Tests in Specific Browser
 
 ```bash
-npm run test:chromium
+npx playwright test --project=chromium
+npx playwright test --project=firefox
+npx playwright test --project=webkit
 ```
 
-Chromium is currently the only enabled browser project. Firefox and WebKit commands will be added after cross-browser validation.
+Run the suite against one browser engine at a time. The complete configured matrix can be run with `npm test`.
 
 ### Run Tests with Verbose Output
 
@@ -595,7 +606,7 @@ Modify `playwright.config.js`:
 
 ### Cross-Browser Testing
 
-The current project configuration enables Chromium only. Firefox and WebKit are intentionally left disabled until the suite has been validated against those browser engines.
+The current project configuration enables Chromium, Firefox, and WebKit. Run each project independently to validate browser-specific behavior and investigate any engine-specific failures.
 
 ## Project Maintenance
 

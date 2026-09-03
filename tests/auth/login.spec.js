@@ -155,8 +155,17 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
 
-        // Verify Email is requred message - Password is one character blank space
-        await expect(login.getErrorLocator('emptyEmail')).toBeVisible({ timeout: 5000 });
+        // Cross-browser handling for whitespace-only email validation:
+    // Chrome/Safari trim whitespace natively, treating the input as empty and triggering our application's UI error.
+    // Firefox does not trim whitespace during native validation, interpreting the spaces as an invalid email string (typeMismatch).
+       const browserName = page.context().browser().browserType().name();
+
+        if (browserName === 'firefox') {
+            await expect(page.locator(login.email)).toHaveJSProperty("validity.typeMismatch", true);
+        } else {
+            // Handles Chromium (Chrome) and WebKit (Safari)
+            await expect(login.getErrorLocator('emptyEmail')).toBeVisible({ timeout: 5000 });
+        }
     });
 
     test("Sign in without email", async ({ page, goToLogin: { login } }) => {
