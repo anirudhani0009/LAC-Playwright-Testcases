@@ -40,8 +40,6 @@ test.describe("LAC Login Page - Positive cases", () => {
         // EXPECTED: Password input should be masked
         await expect(page.locator(login.password)).toHaveAttribute("type", "password");
     });
-
-
 });
 
 test.describe("LAC Login Page - Nagative cases", () => {
@@ -87,12 +85,6 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
 
-        // Verify error message for incorrect email
-        //Retrieve the browser's native validation message from the email field
-        const validationMsg = await page.locator(login.email).evaluate((element) => {
-            return element.validationMessage;
-        });
-
         //Test the browser’s validation state: as messages will differ from browser to browser
         await expect(page.locator(login.email)).toHaveJSProperty("validity.typeMismatch", true);
     });
@@ -107,12 +99,6 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
 
-        // Verify error message for incorrect email
-        //Retrieve the browser's native validation message from the email field
-        const validationMsg = await page.locator(login.email).evaluate((element) => {
-            return element.validationMessage;
-        });
-
         //Test the browser’s validation state: as messages will differ from browser to browser
         await expect(page.locator(login.email)).toHaveJSProperty("validity.typeMismatch", true);
     });
@@ -126,12 +112,6 @@ test.describe("LAC Login Page - Nagative cases", () => {
 
         // Verify login failed: still on login page
         await expect(page.locator(login.signinButton)).toBeVisible();
-
-        // Verify error message for Incomplete email
-        //Retrieve the browser's native validation message from the email field
-        const validationMsg = await page.locator(login.email).evaluate((element) => {
-            return element.validationMessage;
-        });
 
         //Test the browser’s validation state: as messages will differ from browser to browser
         await expect(page.locator(login.email)).toHaveJSProperty("validity.typeMismatch", true);
@@ -219,6 +199,4 @@ test.describe("LAC Login Page - Nagative cases", () => {
         // Verify password required validation error
         await expect(login.getErrorLocator("wrongemail")).toBeVisible();
     });
-
-
 });
