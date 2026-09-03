@@ -25,14 +25,14 @@ jobs:
         BASE_URL: ${{ vars.BASE_URL }}
     - name: Upload Playwright HTML report
       if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
     - name: Upload Playwright test results
       if: ${{ !cancelled() && hashFiles('test-results/**') != '' }}
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: playwright-test-results
         path: test-results/
