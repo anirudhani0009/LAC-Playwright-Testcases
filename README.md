@@ -103,7 +103,7 @@ This project follows the **Page Object Model** design pattern:
 
 ## Test Suite Capabilities
 
-This automation suite provides comprehensive validation across five key user journey areas:
+This automation suite provides focused validation across five key user journey areas:
 
 ### 1. Authentication & Login Validation
 
@@ -330,7 +330,7 @@ Captures screenshots only when tests fail, useful for debugging.
 
 ### View HTML Report
 
-After test execution, view the comprehensive HTML report:
+After test execution, view the HTML report:
 
 ```bash
 npm run test:report
@@ -556,13 +556,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       - run: npm ci
       - run: npx playwright install --with-deps
       - run: npx playwright test
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
@@ -576,10 +576,10 @@ jobs:
 
 ```bash
 # Staging environment
-BASE_URL=https://staging.freelance-learn.com npx playwright test
+BASE_URL=https://staging.freelance-learn.com npm test
 
 # Production environment
-BASE_URL=https://freelance-learn-automation.vercel.app npx playwright test
+BASE_URL=https://freelance-learn-automation.vercel.app npm test
 ```
 
 ### Parallel Test Execution with Custom Configuration
@@ -595,11 +595,7 @@ Modify `playwright.config.js`:
 
 ### Cross-Browser Testing
 
-```bash
-npx playwright test --project=chromium --project=firefox --project=webkit
-```
-
-All three browsers run sequentially by default. Adjust workers for parallel browser execution.
+The current project configuration enables Chromium only. Firefox and WebKit are intentionally left disabled until the suite has been validated against those browser engines.
 
 ## Project Maintenance
 
@@ -688,7 +684,7 @@ This project is licensed under the **ISC License** – see [package.json](packag
 
 **Built By:** QA Automation Engineer  
 **Purpose:** Learning and automation practice for real-world UI testing workflows  
-**Last Updated:** 2024
+**Last Updated:** 2026-09-03
 
 ---
 
