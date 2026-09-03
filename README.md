@@ -88,13 +88,20 @@ Before setting up this project, ensure you have:
 │   ├── coverage-matrix.md           # Feature-to-test coverage mapping
 │   └── defect-report-example.md     # Illustrative defect report
 │
+├── .github/
+│   └── workflows/
+│       └── playwright.yml            # GitHub Actions test workflow
+├── .env.example                     # Environment variable template
 ├── playwright-report/              # Generated HTML reports
 ├── test-results/                   # Test execution artifacts
 ├── .gitignore                      # Git ignore rules
 ├── package.json                    # Project dependencies & metadata
+├── package-lock.json               # Locked dependency versions
 ├── playwright.config.js            # Playwright configuration
 └── README.md                       # This file
 ```
+
+The local `.env` file is intentionally omitted from this tree because it is ignored by Git. Copy `.env.example` to `.env` and provide test-only credentials locally when needed.
 
 ### QA Documentation
 
