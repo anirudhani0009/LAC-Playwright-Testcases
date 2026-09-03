@@ -1,5 +1,4 @@
 const { test, expect } = require("../fixtures/cartFixture.js");
-const LoginData = require("../assets/lac-loginCred.json");
 
 // Test suite: Validates cart page functionality including items, pricing, removal, and checkout
 // Covers: cart contents verification, price calculations, enrollment flow, item removal, checkout completion

@@ -2,15 +2,15 @@
 
 ## Overview
 
-**LAC Playwright Automation** is a comprehensive, production-grade UI automation testing framework designed to validate critical user workflows on the LAC learning platform. Built with **Playwright Test** and following industry-standard **Page Object Model (POM)** architecture, this project ensures robust, maintainable, and scalable test automation.
+**LAC Playwright Automation** is a focused UI automation suite for demonstrating Playwright skills against the LAC learning platform. Built with **Playwright Test** and following the **Page Object Model (POM)** architecture, it covers selected high-value user workflows.
 
-The suite provides end-to-end validation across authentication flows, user registration, course management, shopping cart operations, navigation, and third-party integrations—enabling teams to catch regressions early and maintain high-quality user experiences.
+The suite provides end-to-end checks across login validation, signup form requirements, course cart operations, enrollment, navigation, and third-party links. It is intentionally a portfolio-sized smoke/regression suite rather than complete application coverage.
 
 ### Key Highlights
 
 - ✅ **Page Object Model Architecture** – Clean separation of concerns and reusable page components
 - ✅ **Fixture-Based Authentication** – Shared authenticated sessions for efficient test execution
-- ✅ **Comprehensive Test Coverage** – Authentication, signup, homepage, cart, and social media validation
+- ✅ **Focused Risk-Based Coverage** – Authentication, signup validation, homepage, cart, and social media checks
 - ✅ **HTML Reporting** – Detailed test reports with full visibility into pass/fail results
 - ✅ **Parallel Execution Ready** – Optimized for concurrent test runs
 - ✅ **Easy Local & CI/CD Integration** – Works seamlessly with GitHub Actions and other CI platforms
@@ -38,17 +38,17 @@ The suite is designed to validate that the application behaves correctly across 
 | Technology | Version | Purpose |
 |------------|---------|---------|
 | **JavaScript (ES6+)** | Latest | Primary programming language |
-| **Node.js** | 14.x or higher | Runtime environment |
-| **Playwright** | Latest | Cross-browser automation framework |
-| **Playwright Test** | Latest | Built-in test runner with parallelization |
+| **Node.js** | 20.x or higher | Runtime environment |
+| **Playwright** | 1.62.1 | Browser automation framework |
+| **Playwright Test** | 1.62.1 | Test runner with parallelization |
 | **HTML Reporter** | Built-in | Test results visualization |
 
 ## Prerequisites
 
 Before setting up this project, ensure you have:
 
-- **Node.js** (v14.0 or later) – [Download here](https://nodejs.org/)
-- **npm** (v6.0 or later) – Usually bundled with Node.js
+- **Node.js** (v20.0 or later) – [Download here](https://nodejs.org/)
+- **npm** (bundled with Node.js)
 - **Git** – For version control
 - **A modern code editor** – VS Code recommended
 - **Stable internet connection** – For accessing the target application and installing dependencies
@@ -61,7 +61,7 @@ Before setting up this project, ensure you have:
 .
 ├── assets/                          # Test data and configuration
 │   ├── lac-courses.json            # Course catalog data
-│   └── lac-loginCred.json          # Test user credentials
+│   └── lac-loginCred.json           # Legacy test data; do not commit credentials
 │
 ├── fixtures/                        # Reusable test setup
 │   ├── auth.js                     # Shared authentication fixture
@@ -109,7 +109,7 @@ This automation suite provides comprehensive validation across five key user jou
 
 **File:** [tests/auth/login.spec.js](tests/auth/login.spec.js)
 
-Validates secure user authentication with comprehensive edge case coverage:
+Validates the login workflow and selected client/server-side validation cases:
 
 - ✅ Valid user sign-in with correct credentials
 - ✅ Invalid password handling and error messaging
@@ -118,7 +118,6 @@ Validates secure user authentication with comprehensive edge case coverage:
 - ✅ Empty password field validation
 - ✅ Missing password error handling
 - ✅ Required field error message display
-- ✅ Session persistence post-login
 
 **Key Test Scenarios:**
 - Valid credentials authentication flow
@@ -130,23 +129,21 @@ Validates secure user authentication with comprehensive edge case coverage:
 
 **File:** [tests/auth/signup.spec.js](tests/auth/signup.spec.js)
 
-Ensures new user registration flows work smoothly with proper validation:
+Checks signup form requirements and navigation:
 
-- ✅ Successful registration with all required fields
+- ✅ Valid form completion enables signup
 - ✅ Name field validation and requirements
 - ✅ Email field validation and format checking
-- ✅ Password field validation and strength requirements
+- ✅ Password field required validation
 - ✅ Interests selection validation
 - ✅ State selection validation
 - ✅ Hobbies selection validation
 - ✅ Navigation back to login page
-- ✅ Data persistence across page transitions
 
 **Key Test Scenarios:**
-- Complete registration happy path
-- Individual field validation and error handling
-- Multi-step form progression
-- Navigation and session management
+- Valid form completion
+- Individual required-field validation
+- Navigation back to the login page
 
 ### 3. Homepage & Course Catalog
 
@@ -154,19 +151,15 @@ Ensures new user registration flows work smoothly with proper validation:
 
 Validates the core course browsing and selection experience:
 
-- ✅ Viewing course catalog with descriptions and pricing
 - ✅ Adding multiple courses to shopping cart
 - ✅ Removing individual courses from cart
 - ✅ Cart item count updates
-- ✅ Course availability and filtering
 - ✅ Sidebar navigation visibility and functionality
-- ✅ Page transitions and state management
 
 **Key Test Scenarios:**
-- Course discovery and exploration
 - Cart operations (add/remove)
 - Bulk and individual course management
-- Navigation between sections
+- Sidebar navigation
 
 ### 4. Shopping Cart Operations
 
@@ -176,18 +169,16 @@ Ensures shopping cart reliability and accuracy:
 
 - ✅ Displaying all added courses with prices
 - ✅ Accurate total price calculation
-- ✅ Adding courses to cart from product pages
 - ✅ Removing courses from cart with confirmation
 - ✅ Quantity updates and price recalculation
-- ✅ Cart persistence across sessions
 - ✅ Empty cart state handling
 - ✅ Checkout readiness validation
 
 **Key Test Scenarios:**
 - Cart accuracy and calculations
-- Item lifecycle (add/update/remove)
+- Item lifecycle (add/remove)
 - Price and total validation
-- Cart state management
+- Enrollment and navigation
 
 ### 5. Social Media Integration
 
@@ -200,7 +191,7 @@ Verifies external social media links function correctly:
 - ✅ LinkedIn company page link opens in new tab
 - ✅ Facebook page link opens in new tab
 - ✅ Correct URLs are targeted
-- ✅ Links open in separate browser contexts
+- ✅ Links open in new browser tabs
 
 **Key Test Scenarios:**
 - Multi-tab page handling
@@ -230,7 +221,7 @@ This installs all required packages defined in `package.json`, including Playwri
 npx playwright install
 ```
 
-This downloads the necessary browser binaries (Chromium, Firefox, WebKit) required for cross-browser testing.
+This downloads the Playwright browser binaries. The current configuration runs the suite against Chromium; Firefox and WebKit projects are not enabled yet.
 
 **For Linux environments** (with additional system dependencies):
 
@@ -246,19 +237,29 @@ npx playwright --version
 
 You should see the installed Playwright version displayed.
 
-### Step 5: (Optional) Configure Test Data
+### Step 5: Configure Environment Variables
 
-Update credentials and test data in the following files:
+Authenticated tests require a dedicated test account. Set the credentials through environment variables and do not commit them:
 
-- `assets/lac-loginCred.json` – Add your test user credentials
-- `assets/lac-courses.json` – Ensure course data matches the target application
+```powershell
+$env:LAC_USERNAME="your-test-account@example.com"
+$env:LAC_PASSWORD="your-test-account-password"
+```
+
+The target URL can be overridden with `BASE_URL`:
+
+```powershell
+$env:BASE_URL="https://your-test-environment.example.com"
+```
+
+Course selections are maintained in `assets/lac-courses.json`. The legacy credential file is still referenced by some validation tests and should be removed as part of the credential-cleanup work.
 
 ## Running Tests
 
 ### Run All Tests
 
 ```bash
-npx playwright test
+npm test
 ```
 
 Executes the entire test suite with default configuration (headless mode, sequential or parallel based on config).
@@ -266,7 +267,7 @@ Executes the entire test suite with default configuration (headless mode, sequen
 ### Run Tests in Headed Mode
 
 ```bash
-npx playwright test --headed
+npm run test:headed
 ```
 
 Launches browser windows showing test execution in real-time. Useful for debugging and visual verification.
@@ -296,7 +297,7 @@ Runs tests matching the specified pattern. The `-g` flag filters tests by name.
 ### Run Tests with Debugging
 
 ```bash
-npx playwright test --debug
+npm run test:debug
 ```
 
 Opens Playwright Inspector for step-by-step debugging with code navigation and DOM inspection.
@@ -304,12 +305,10 @@ Opens Playwright Inspector for step-by-step debugging with code navigation and D
 ### Run Tests in Specific Browser
 
 ```bash
-npx playwright test --project=chromium
-npx playwright test --project=firefox
-npx playwright test --project=webkit
+npm run test:chromium
 ```
 
-Run tests against a specific browser engine.
+Chromium is currently the only enabled browser project. Firefox and WebKit commands will be added after cross-browser validation.
 
 ### Run Tests with Verbose Output
 
@@ -334,7 +333,7 @@ Captures screenshots only when tests fail, useful for debugging.
 After test execution, view the comprehensive HTML report:
 
 ```bash
-npx playwright show-report
+npm run test:report
 ```
 
 This opens the report in your default browser showing:
@@ -346,7 +345,7 @@ This opens the report in your default browser showing:
 
 ### Report Artifacts
 
-Reports are stored in:
+Generated reports are stored in:
 - `playwright-report/` – HTML report directory
 - `test-results/` – Raw test results and logs
 
@@ -366,7 +365,7 @@ Edit `playwright.config.js` to customize test behavior:
   workers: process.env.CI ? 1 : undefined, // Workers per browser
   reporter: 'html',                      // HTML reporter
   use: {
-    baseURL: 'https://freelance-learn-automation.vercel.app',
+    baseURL: process.env.BASE_URL || 'https://freelance-learn-automation.vercel.app',
     trace: 'on-first-retry',             // Trace failed tests
   },
   webServer: {                           // Optional: start local server

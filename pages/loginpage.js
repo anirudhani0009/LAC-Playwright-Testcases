@@ -1,5 +1,4 @@
 const {expect} = require("@playwright/test");
-const LoginData = require("../assets/lac-loginCred.json");
 // Page object model for the login page.
 // This class keeps all login-related selectors and actions in one place.
 class LoginPage{
@@ -10,7 +9,7 @@ class LoginPage{
         // Header text used to verify that the login page has loaded.
         this.header = "//h2[text()='Sign In']";
         // Login page URL for direct navigation.
-        this.url = "https://freelance-learn-automation.vercel.app/login";
+        this.url = "/login";
         // Input locators for email and password fields.
         this.email = "#email1";
         this.password = "#password1"
