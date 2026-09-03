@@ -93,8 +93,8 @@ test.describe("LAC Login Page - Nagative cases", () => {
             return element.validationMessage;
         });
 
-        //Use the getter from the loginpage.js file and make the code clean 
-        expect(validationMsg).toContain(login.expectedMsg.wrongEmailFormat1);
+        //Test the browser’s validation state: as messages will differ from browser to browser
+        await expect(page.locator(login.email)).toHaveJSProperty("validity.typeMismatch", true);
     });
 
     test("Sign in with Incorrect email format 2 - (user.example.com)", async ({ page, goToLogin: { login } }) => {
@@ -113,8 +113,8 @@ test.describe("LAC Login Page - Nagative cases", () => {
             return element.validationMessage;
         });
 
-        //Use the getter from the loginpage.js file and make the code clean to validate
-        expect(validationMsg).toContain(login.expectedMsg.wrongEmailFormat2);
+        //Test the browser’s validation state: as messages will differ from browser to browser
+        await expect(page.locator(login.email)).toHaveJSProperty("validity.typeMismatch", true);
     });
 
     test("Sign in with Incomplete email - (user@)", async ({ page, goToLogin: { login } }) => {
@@ -133,8 +133,8 @@ test.describe("LAC Login Page - Nagative cases", () => {
             return element.validationMessage;
         });
 
-        //Use the getter from the loginpage.js file and make the code clean 
-        expect(validationMsg).toContain(login.expectedMsg.incompleteEmail);
+        //Test the browser’s validation state: as messages will differ from browser to browser
+        await expect(page.locator(login.email)).toHaveJSProperty("validity.typeMismatch", true);
     });
 
     test("Sign in with Incorrect username and password", async ({ page, goToLogin: { login } }) => {

@@ -26,9 +26,6 @@ class LoginPage{
                 allEmpty: "Email and Password is required",
                 emptyEmail: "Email is required",
                 emptyPassword: "Password is required",
-                wrongEmailFormat1: `Please include an '@' in the email address. '${LoginData.nonusername1}' is missing an '@'.`,
-                wrongEmailFormat2: `Please include an '@' in the email address. '${LoginData.nonusername2}' is missing an '@'.`,
-                incompleteEmail: `Please enter a part following '@'. '${LoginData.incompleteusername}' is incomplete.`
             },           
             // Builds an XPath locator for the selected error message. used in fun getErrorLocator(errorkey)
             error: (msg) => {
@@ -41,12 +38,6 @@ class LoginPage{
         this.linkedinBtn = page.locator('a[href*="linkedin.com"]').first();
         this.facebookBtn = page.locator('a[href*="facebook.com"]').first();
     }
-
-    // Shortcut getter for getting the messages in a clean way
-    get expectedMsg(){
-        return this.errorMsg.messages;
-    }
-
 
     // Returns a Playwright locator for an error based on a key from the messages map.
     getErrorLocator(errorkey){
